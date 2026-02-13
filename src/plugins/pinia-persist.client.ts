@@ -19,7 +19,7 @@ function persistPlugin({ store, options }: PiniaPluginContext) {
     try {
       store.$patch(JSON.parse(raw));
     } catch {
-      // ignore broken storage
+      console.log('fail with storage')
     }
   }
 
@@ -28,6 +28,7 @@ function persistPlugin({ store, options }: PiniaPluginContext) {
   });
 }
 
-export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.$pinia.use(persistPlugin);
+export default defineNuxtPlugin(() => {
+  const pinia = usePinia();
+  pinia.use(persistPlugin);
 });

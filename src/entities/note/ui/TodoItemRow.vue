@@ -17,6 +17,7 @@
 </template>
 
 <script setup lang="ts">
+import type { CheckboxValueType } from "element-plus";
 import type { Todo } from "~/entities/note/model/types";
 
 const props = defineProps<{ model: Todo }>();
@@ -30,8 +31,8 @@ const updateText = (v: string) => {
   if (props.model.text !== v) emit("update", { ...props.model, text: v });
 };
 
-const toggleDone = (v: boolean) => {
-  emit("update", { ...props.model, done: v });
+const toggleDone = (v: CheckboxValueType) => {
+  emit("update", { ...props.model, done: v as boolean });
 };
 
 const onRemove = () => {
