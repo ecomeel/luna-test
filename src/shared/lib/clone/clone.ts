@@ -1,7 +1,10 @@
-import { toRaw } from "vue";
+import cloneDeepWith from "lodash-es/cloneDeepWith";
+import { isProxy, toRaw } from "vue";
 
 export function deepClone<T>(value: T): T {
-  const raw = toRaw(value) as T;
-
-  return structuredClone(raw);
+  return cloneDeepWith(value, (val) => {
+    if (isProxy(val)) {
+      return cloneDeepWith(toRaw(val));
+    }
+  }) as T;
 }

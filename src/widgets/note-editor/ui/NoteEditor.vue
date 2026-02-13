@@ -3,9 +3,10 @@
     <div class="top">
       <div class="title">
         <el-input
-          v-model="draft.title"
+          :model-value="draft.title"
           placeholder="Название заметки"
           size="large"
+          @update:modelValue="onTitleInput"
         />
       </div>
 
@@ -90,12 +91,30 @@ watch(
 );
 
 let tmr: number | null = null;
+let base: Note | null = null;
+let last: Note | null = null;
+
 const commitDebounced = (prev: Note, next: Note) => {
+  if (!base) base = prev;
+  last = next;
+
   if (tmr) window.clearTimeout(tmr);
   tmr = window.setTimeout(() => {
-    commit(prev, next);
+    if (base && last) commit(base, last);
+    base = null;
+    last = null;
     tmr = null;
   }, 200);
+};
+
+const onTitleInput = (v: unknown) => {
+  const title = typeof v === "string" ? v : String(v ?? "");
+
+  const prev = present.value;
+  const next = { ...prev, title };
+
+  set(next);
+  commitDebounced(prev, next);
 };
 
 const addTodo = () => {
