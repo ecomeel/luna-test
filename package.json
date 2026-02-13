@@ -15,6 +15,7 @@
     "lodash-es": "^4.17.23",
     "nuxt": "^3.21.1",
     "pinia": "^3.0.4",
+    "pinia-plugin-persistedstate": "^4.7.1",
     "vue": "^3.5.28",
     "vue-router": "^4.6.4"
   },
