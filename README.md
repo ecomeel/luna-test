@@ -1,2 +1,2 @@
 # Run project
-docker-compose up --build# luna-test
+docker-compose up --build

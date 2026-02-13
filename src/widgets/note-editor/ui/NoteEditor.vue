@@ -48,6 +48,8 @@ import type { Note, Todo } from "~/entities/note/model/types";
 import TodoItemRow from "~/entities/note/ui/TodoItemRow.vue";
 import { useUndoRedo } from "~/shared/lib/undo/useUndoRedo";
 import { useHotkeys } from "~/shared/lib/keyboard/useHotkeys";
+import { deepClone } from "~/shared/lib/clone/clone";
+import { deepEqual } from "~/shared/lib/equal/equal";
 
 const props = defineProps<{ modelValue: Note; makeTodo: (text?: string) => Todo }>();
 
@@ -72,10 +74,10 @@ const {
 
 const draft = computed(() => present.value);
 
-const initialJson = ref(JSON.stringify(props.modelValue));
+const initial = ref(deepClone(props.modelValue));
 
 watch(present,
-  (v) => emit("hasChanges", JSON.stringify(v) !== initialJson.value),
+  (v) => emit("hasChanges", !deepEqual(v, initial.value)),
   { deep: true, immediate: true }
 );
 
@@ -83,7 +85,7 @@ watch(
   () => props.modelValue,
   (v) => {
     reset(v);
-    initialJson.value = JSON.stringify(v);
+    initial.value = deepClone(v);
   }
 );
 
@@ -121,7 +123,7 @@ const removeTodo = (id: string) => {
 
 const emitSave = () => {
   emit("save", { ...present.value, updatedAt: Date.now() });
-  initialJson.value = JSON.stringify(present.value);
+  initial.value = deepClone(present.value);
   emit("hasChanges", false);
 };
 
