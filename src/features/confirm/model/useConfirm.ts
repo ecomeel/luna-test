@@ -1,12 +1,5 @@
 import { ElMessageBox } from "element-plus";
-
-type ConfirmPayload = {
-  title: string;
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
-  danger?: boolean;
-};
+import { type ConfirmPayload } from "./types";
 
 export function useConfirm() {
   return async (p: ConfirmPayload): Promise<boolean> => {

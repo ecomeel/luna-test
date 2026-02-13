@@ -1,9 +1,5 @@
 import { onBeforeUnmount, onMounted } from "vue";
-
-type Hotkey = {
-  match: (e: KeyboardEvent) => boolean;
-  handler: () => void;
-};
+import { type Hotkey } from "./types";
 
 export function useHotkeys(hotkeys: Hotkey[]) {
   const onKeydown = (e: KeyboardEvent) => {
